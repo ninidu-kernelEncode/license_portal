@@ -17,4 +17,10 @@ class Customer extends Model
         'company',
         'contact_number',
     ];
+    public function assignments()
+    {
+        return $this->hasMany(\App\Models\ProductAssignment::class, 'customer_id', 'customer_id');
+    }
+
+
 }

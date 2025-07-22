@@ -1,0 +1,61 @@
+/*customer module*/
+.customer.card {
+    padding: 10px;
+}
+.log.card {
+    padding: 10px;
+}
+
+
+/*login*/
+.login-logo {
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    font-size: 30px;
+}
+
+
+
+/*role module*/
+.role-create.d-flex {
+    padding: 10px;
+    justify-content: end;
+}
+
+
+
+/*user module*/
+.create-user.d-flex {
+    padding: 10px;
+    justify-content: end;
+}
+
+.user-create-submit{
+    justify-content: end;
+}
+.submit-button {
+    width: 10%;
+}
+.table-hover tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+
+/*product assign module*/
+.product-assign.table-hover tbody tr:hover {
+    background-color: #e6f2ff !important;
+}
+.product-assign thead th {
+    background-color: #343a40; /* dark header */
+    color: white;
+    vertical-align: middle;
+}
+
+.product-assign.table-hover tbody tr:hover {
+    background-color: #f2faff; /* light blue hover */
+}
+.license-section.border.rounded.p-3.mt-4 {
+    margin-left: 8px;
+    margin-bottom: 15px;
+}

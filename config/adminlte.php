@@ -335,6 +335,12 @@ return [
             'can'  => 'product.manage',
         ],
         [
+            'text' => 'Product Assignment',
+            'url'  => 'product_assignments',
+            'icon' => 'fas fa-users',
+            'can'  => 'product_assignment.manage',
+        ],
+        [
             'text' => 'Roles & Permissions',
             'url'  => '/roles',
             'icon' => 'fas fa-key',
@@ -409,17 +415,7 @@ return [
                 [
                     'type' => 'css',
                     'asset' => true,
-                    'location' => 'assets/css/user.css',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'assets/css/role.css',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'assets/css/customer.css',
+                    'location' => 'assets/css/main.css',
                 ],
                 [
                     'type' => 'css',

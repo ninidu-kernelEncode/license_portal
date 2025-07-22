@@ -14,7 +14,7 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        $modules = ['user','customer','license', 'product','logs','role'];
+        $modules = ['user','customer','license', 'product','logs','role','product_assignment'];
         $actions = ['view', 'create', 'update', 'delete', 'manage'];
 
         foreach ($modules as $module) {
