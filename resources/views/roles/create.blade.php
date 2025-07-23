@@ -4,6 +4,7 @@
 
 @section('content_header')
     <h1>Create Role</h1>
+    {{ Breadcrumbs::render('roles.create') }}
 @stop
 
 @section('content')

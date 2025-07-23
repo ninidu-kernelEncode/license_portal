@@ -4,6 +4,7 @@
 
 @section('content_header')
     <h1>Licenses Management</h1>
+    {{ Breadcrumbs::render('licenses.index') }}
 @stop
 
 @section('content')

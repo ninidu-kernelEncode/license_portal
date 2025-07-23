@@ -1,6 +1,8 @@
 @extends('adminlte::page')
 @section('title', 'Create Product Assignment')
-@section('content_header') <h1>Create Product Assignment</h1> @stop
+@section('content_header') <h1>Create Product Assignment</h1>
+{{ Breadcrumbs::render('product_assignments.create') }}
+@stop
 @section('content')
     <form action="{{  route('product_assignments.store') }}" method="POST">
         @csrf

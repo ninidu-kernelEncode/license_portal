@@ -4,6 +4,7 @@
 
 @section('content_header')
     <h1>Product Assignments</h1>
+    {{ Breadcrumbs::render('product_assignments.index') }}
 @stop
 
 @section('content')

@@ -4,6 +4,7 @@
 
 @section('content_header')
     <h1>System Logs</h1>
+    {{ Breadcrumbs::render('logs.index') }}
 @stop
 
 @section('content')

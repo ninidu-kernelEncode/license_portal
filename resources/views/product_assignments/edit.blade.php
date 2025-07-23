@@ -1,6 +1,8 @@
 @extends('adminlte::page')
 @section('title', 'Edit Product Assignment')
-@section('content_header') <h1>Edit Product Assignment</h1> @stop
+@section('content_header') <h1>Edit Product Assignment</h1>
+{{ Breadcrumbs::render('product_assignments.edit',$assignment) }}
+@stop
 @section('content')
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">

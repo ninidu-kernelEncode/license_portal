@@ -78,3 +78,9 @@ label {
 .content-header h1 {
     font-weight: 400 !important;
 }
+.brand-link .brand-image {
+    box-shadow:none!important;
+}
+.brand-text {
+    text-decoration: unset!important;
+}

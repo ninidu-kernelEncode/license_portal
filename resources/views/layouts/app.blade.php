@@ -25,6 +25,11 @@
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
+                    @if (Diglactic\Breadcrumbs\Breadcrumbs::exists())
+                        <nav class="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                            {{ Breadcrumbs::render() }}
+                        </nav>
+                    @endif
                 </header>
             @endisset
 
@@ -33,5 +38,11 @@
                 {{ $slot }}
             </main>
         </div>
+        <!-- Footer -->
+        <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-gray-500 dark:text-gray-400 text-center">
+                &copy; {{ date('Y') }} Powered by Kernel Encode.
+            </div>
+        </footer>
     </body>
 </html>

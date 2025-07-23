@@ -1,6 +1,8 @@
 @extends('adminlte::page')
 @section('title', 'Product Assignment Details')
-@section('content_header') <h1>Product Assignment Details</h1> @stop
+@section('content_header') <h1>Product Assignment Details</h1>
+{{ Breadcrumbs::render('product_assignments.show',$customer) }}
+@stop
 @section('content')
         <div class="card shadow-sm">
             <div class="card-body">

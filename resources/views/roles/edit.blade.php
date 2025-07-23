@@ -1,9 +1,10 @@
 @extends('adminlte::page')
 
-@section('title', 'Edit Role: ' . $role->name)
+@section('title', 'Edit Role')
 
 @section('content_header')
-    <h1>Edit Role: {{ ucfirst($role->name) }}</h1>
+    <h1>Edit Role</h1>
+    {{ Breadcrumbs::render('roles.edit',$role) }}
 @stop
 
 @section('content')

@@ -1,9 +1,10 @@
 @extends('adminlte::page')
 
-@section('title', 'Roles Management')
+@section('title', 'Roles & Permissions Management')
 
 @section('content_header')
     <h1>Roles</h1>
+    {{ Breadcrumbs::render('roles.index') }}
 @stop
 
 @section('content')

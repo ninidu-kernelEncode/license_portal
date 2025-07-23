@@ -4,6 +4,7 @@
 
 @section('content_header')
     <h1>Customer Details</h1>
+    {{ Breadcrumbs::render('customers.show',$customer) }}
 @stop
 
 @section('content')
