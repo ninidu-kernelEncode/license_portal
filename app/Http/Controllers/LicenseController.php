@@ -6,7 +6,7 @@ use App\Models\License;
 use App\Models\Customer;
 use App\Models\ProductAssignment;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 class LicenseController extends Controller
 {
     /**
@@ -87,19 +87,23 @@ class LicenseController extends Controller
 
     public function checkLicenseValidity($licenseKey, $customer_id, $product_id)
     {
-        $license = License::where('customer_id', $customer_id)
-            ->where('product_id', $product_id)
+        $license = License::where('customer_ref_id', $customer_id)
+            ->where('product_ref_id', $product_id)
             ->where('status', 'Active')
             ->latest()
             ->first();
 
+        $response = [
+            'valid' => false,
+            'license_key' => $licenseKey,
+            'customer_id' => $customer_id,
+            'product_id' => $product_id,
+            'start_date' => optional($license)->start_date,
+            'end_date' => optional($license)->end_date,
+        ];
+
         if (!$license) {
-            return [
-                'valid' => false,
-                'license_key' => $licenseKey,
-                'customer_id' => $customer_id,
-                'product_id' => $product_id
-            ];
+            return response()->json($response);
         }
 
         $rawLicense = "{$customer_id}|{$product_id}|{$license->start_date}|{$license->end_date}";
@@ -116,48 +120,21 @@ class LicenseController extends Controller
                 $expectedKey = strtoupper(hash_hmac('sha256', $rawLicense, $secret));
                 break;
             default:
-                return [
-                    'valid' => false,
-                    'license_key' => $licenseKey,
-                    'customer_id' => $customer_id,
-                    'product_id' => $product_id
-                ];
+                return response()->json($response);
         }
 
         if ($expectedKey !== $licenseKey) {
-            return [
-                'valid' => false,
-                'license_key' => $licenseKey,
-                'customer_id' => $customer_id,
-                'product_id' => $product_id
-            ];
+            return response()->json($response);
         }
 
-        // Check date validity
-        $now = now();
-        if ($now->lt($license->start_date)) {
-            return [
-                'valid' => false,
-                'license_key' => $licenseKey,
-                'customer_id' => $customer_id,
-                'product_id' => $product_id
-            ];
+        $today = now()->startOfDay();
+        $startDate = Carbon::parse($license->start_date)->startOfDay();
+        $endDate = Carbon::parse($license->end_date)->startOfDay();
+
+        if ($today->gte($startDate) && $today->lte($endDate)) {
+            $response['valid'] = true;
         }
 
-        if ($now->gt($license->end_date)) {
-            return [
-                'valid' => false,
-                'license_key' => $licenseKey,
-                'customer_id' => $customer_id,
-                'product_id' => $product_id
-            ];
-        }
-
-        return [
-            'valid' => true,
-            'license_key' => $licenseKey,
-            'customer_id' => $customer_id,
-            'product_id' => $product_id
-        ];
+        return response()->json($response);
     }
 }
