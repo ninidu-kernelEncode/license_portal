@@ -12,7 +12,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard.index');
+        $totalCustomers = \App\Models\Customer::count();
+        $totalProducts = \App\Models\Product::count();
+        $totalActiveLicenses = \App\Models\License::where('status', 1)->count();
+        return view('dashboard.index', compact('totalCustomers', 'totalProducts','totalActiveLicenses'));
     }
 
     /**

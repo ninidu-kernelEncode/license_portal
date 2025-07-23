@@ -12,19 +12,19 @@ class ProductAssignment extends Model
     protected $primaryKey = 'assignment_id';
 
     protected $fillable = [
-        'product_id',
-        'customer_id',
+        'product_ref_id',
+        'customer_ref_id',
         'status',
     ];
 
     public function product()
     {
-        return $this->belongsTo(\App\Models\Product::class, 'product_id', 'product_id');
+        return $this->belongsTo(\App\Models\Product::class, 'product_ref_id', 'product_ref_id');
     }
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
+        return $this->belongsTo(Customer::class, 'customer_ref_id', 'customer_ref_id');
     }
 
     }

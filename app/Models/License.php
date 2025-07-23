@@ -10,8 +10,8 @@ class License extends Model
     protected $primaryKey = 'license_id';
 
     protected $fillable = [
-        'product_id',
-        'customer_id',
+        'product_ref_id',
+        'customer_ref_id',
         'license_key',
         'hash_algorithm',
         'start_date',
@@ -22,10 +22,15 @@ class License extends Model
     /**
      * Create and return a new license for a product-customer pair.
      */
+
+    public function product()
+    {
+        return $this->belongsTo(\App\Models\Product::class, 'product_ref_id', 'product_ref_id');
+    }
     public static function createLicense(array $data): License
     {
         try {
-            $rowLicense = "{$data['customer_id']}|{$data['product_id']}|{$data['start_date']}|{$data['end_date']}";
+            $rowLicense = "{$data['customer_ref_id']}|{$data['product_ref_id']}|{$data['start_date']}|{$data['end_date']}";
 
             switch ($data['hash_algorithm']) {
                 case 'MD5':
@@ -43,14 +48,14 @@ class License extends Model
                     throw new \InvalidArgumentException('Invalid hash algorithm.');
             }
 
-            self::where('customer_id', $data['customer_id'])
-                ->where('product_id', $data['product_id'])
+            self::where('customer_ref_id', $data['customer_ref_id'])
+                ->where('product_ref_id', $data['product_ref_id'])
                 ->where('status', 'Active')
                 ->update(['status' => 'Revoked']);
 
             $license = self::create([
-                'product_id' => $data['product_id'],
-                'customer_id' => $data['customer_id'],
+                'product_ref_id' => $data['product_ref_id'],
+                'customer_ref_id' => $data['customer_ref_id'],
                 'license_key' => $licenseKey,
                 'hash_algorithm' => $data['hash_algorithm'],
                 'start_date' => $data['start_date'],

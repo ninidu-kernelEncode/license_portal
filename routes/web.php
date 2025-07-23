@@ -23,6 +23,8 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('product_assignments', ProductAssignmentController::class);
     Route::put('/product_assignments/{id}/revoke', [ProductAssignmentController::class, 'revoke'])->name('product_assignments.revoke');
+    Route::resource('licenses', LicenseController::class);
+    Route::get('/licenses/{id}/{id2}/{id3}/checkLicenseValidity', [LicenseController::class, 'checkLicenseValidity'])->name('licenses.checkLicenseValidity');
     Route::resource('roles', RolePermissionController::class)->except(['show']);
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
 

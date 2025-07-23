@@ -8,15 +8,15 @@ return new class extends Migration {
     {
         Schema::create('product_assignments', function (Blueprint $table) {
             $table->id('assignment_id');
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('customer_id');
+            $table->string('product_ref_id');
+            $table->string('customer_ref_id');
             $table->boolean('status')->default(1);
             $table->timestamp('assigned_at');
             $table->timestamps();
 
             // Foreign key constraints
-            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
-            $table->foreign('customer_id')->references('customer_id')->on('customers')->onDelete('cascade');
+            $table->foreign('product_ref_id')->references('product_ref_id')->on('products')->onDelete('cascade');
+            $table->foreign('customer_ref_id')->references('customer_ref_id')->on('customers')->onDelete('cascade');
         });
     }
 

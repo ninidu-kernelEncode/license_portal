@@ -29,7 +29,7 @@
 
     <div class="customer card shadow-sm">
         <div class="card-body p-0">
-            <table id="customers-table" class="table table-hover mb-0">
+            <table id="product-table" class="table table-hover mb-0">
                 <thead class="table-dark">
                 <tr>
                     <th>Product Name</th>
@@ -58,9 +58,6 @@
                         </td>
                     </tr>
                 @empty
-                    <tr>
-                        <td colspan="5" class="text-center text-muted">No Products found.</td>
-                    </tr>
                 @endforelse
                 </tbody>
             </table>
@@ -69,20 +66,17 @@
 @stop
 
 @section('css')
-    {{-- DataTables CSS --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap5.min.css') }}">
 @endsection
 
 @section('js')
-    {{-- DataTables JS --}}
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dataTables.bootstrap5.min.js') }}"></script>
     <script>
         $(document).ready(function () {
-            $('#customers-table').DataTable({
+            $('#product-table').DataTable({
                 pageLength: 10,
-                order: [[0, 'asc']],
+                order: [[0, 'desc']],
                 responsive: true
             });
         });

@@ -1,7 +1,20 @@
 @extends('adminlte::page')
-@section('title', 'Create Product Assignment')
+@section('title', 'Edit Product Assignment')
 @section('content_header') <h1>Edit Product Assignment</h1> @stop
 @section('content')
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <form action="{{  route('product_assignments.update',$assignment->assignment_id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -10,15 +23,15 @@
 
 
                 <div class="form-group mt-3 col-6">
-                    <label for="customer_id">Customer</label>
+                    <label for="customer_ref_id">Customer</label>
                         <input class="form-control" type="text" id="customer_name" value="{{ $customer->customer_name  }}" readonly>
-                        <input type="hidden" name="customer_id" id="customer_id" value="{{ $customer->customer_id  }}">
+                        <input type="hidden" name="customer_ref_id" id="customer_ref_id" value="{{ $customer->customer_ref_id  }}">
                     </div>
 
                 <div class="form-group   mt-3 col-6">
-                    <label for="product_id">Product</label>
+                    <label for="product_ref_id">Product</label>
                     <input class="form-control" type="text" id="name" value="{{ $product->name  }}" readonly>
-                    <input type="hidden" name="product_id" id="product_id" value="{{ $product->product_id  }}">
+                    <input type="hidden" name="product_ref_id" id="product_ref_id" value="{{ $product->product_ref_id  }}">
                 </div>
 
                 {{-- License Section --}}
@@ -45,12 +58,13 @@
                             <p><strong>Status:</strong> <span class="badge bg-{{ $license->status === 'Active' ? 'success' : 'secondary' }}">{{ $license->status }}</span></p>
                             @if ($license->status != 'Revoked')
                             <div class="d-flex gap-2 mt-2">
-                                <form method="POST" action="{{ route('product_assignments.destroy', $license->license_id) }}"
-                                      onsubmit="return confirm('Revoke this license?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger btn-sm">Revoke</button>
-                                </form>
+                                <button
+                                    type="button"
+                                    class="btn btn-danger btn-sm revoke-license"
+                                    data-license-id="{{ $license->license_id }}"
+                                >
+                                    Revoke
+                                </button>
                             </div>
                         </div>
                     @endif
@@ -92,41 +106,23 @@
         </div>
     </form>
 @endsection
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
+@endsection
 @section('js')
+    <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
     <script>
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+            timeOut: '3000',
+            extendedTimeOut: '1000'
+        };
         $(document).ready(function () {
             $('#isLicenseCreate').val(0);
             let haslicense =  $('#isHasLicense').val();
             let licenseEnabled = false;
-            // $('#customer_id').on('change', function () {
-            //     const customerId = $(this).val();
-            //     const productSelect = $('#product_id');
-            //
-            //     productSelect.empty().append('<option value="">Loading...</option>');
-            //
-            //     if (customerId) {
-            //         $.ajax({
-            //             url: `/unassigned-products/${customerId}`,
-            //             type: 'GET',
-            //             success: function (products) {
-            //                 productSelect.empty();
-            //                 if (products.length > 0) {
-            //                     productSelect.append('<option value="">-- Select Product --</option>');
-            //                     $.each(products, function (index, product) {
-            //                         productSelect.append(`<option value="${product.product_id}">${product.name}</option>`);
-            //                     });
-            //                 } else {
-            //                     productSelect.append('<option value="">No unassigned products found.</option>');
-            //                 }
-            //             },
-            //             error: function () {
-            //                 productSelect.empty().append('<option value="">Error loading products</option>');
-            //             }
-            //         });
-            //     } else {
-            //         productSelect.empty().append('<option value="">-- Select a customer first --</option>');
-            //     }
-            // });
             $('#toggle-license').on('click', function () {
                 licenseEnabled = !licenseEnabled;
 
@@ -163,6 +159,31 @@
                     $('#end_date').val('');
                     $('#isLicenseCreate').val(0);
                 }
+            });
+
+            $('.revoke-license').on('click', function () {
+                if (!confirm('Are you sure you want to revoke this license?')) return;
+
+                let licenseId = $(this).data('license-id');
+
+                $.ajax({
+                    url: `/licenses/${licenseId}`,
+                    type: 'POST',
+                    data: {
+                        _method: 'DELETE',
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        toastr.success('License revoked successfully!');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                    },
+                    error: function (xhr) {
+                        alert('Failed to revoke license.');
+                        console.error(xhr.responseText);
+                    }
+                });
             });
         });
     </script>

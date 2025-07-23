@@ -16,11 +16,15 @@ class Customer extends Model
         'email',
         'company',
         'contact_number',
+        'customer_ref_id'
     ];
     public function assignments()
     {
-        return $this->hasMany(\App\Models\ProductAssignment::class, 'customer_id', 'customer_id');
+        return $this->hasMany(\App\Models\ProductAssignment::class, 'customer_ref_id', 'customer_ref_id');
     }
-
+    public function licenses()
+    {
+        return $this->hasMany(\App\Models\License::class, 'customer_ref_id', 'customer_ref_id');
+    }
 
 }

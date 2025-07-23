@@ -8,20 +8,22 @@
             <div class="card-body">
 
                 <div class="form-group col-6">
-                    <label for="customer_id">Customer</label>
-                    <select name="customer_id" id="customer_id" class="form-control" required>
+                    <label for="customer_ref_id">Customer</label>
+                    <select name="customer_ref_id" id="customer_ref_id" class="form-control @error('customer_ref_id') is-invalid @enderror"  required>
                         <option value="">-- Select Customer --</option>
                         @foreach ($customers as $customer)
-                            <option value="{{ $customer->customer_id }}">{{ $customer->customer_name }}</option>
+                            <option value="{{ $customer->customer_ref_id }}">{{ $customer->customer_name }}</option>
                         @endforeach
                     </select>
+                    @error('customer_ref_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 <div class="form-group mt-3 col-6">
-                    <label for="product_id">Product</label>
-                    <select name="product_id" id="product_id" class="form-control" required>
+                    <label for="product_ref_id">Product</label>
+                    <select name="product_ref_id" id="product_ref_id" class="form-control @error('product_ref_id') is-invalid @enderror" required>
                         <option value="">-- Select a product first --</option>
                     </select>
+                    @error('product_ref_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
                 {{-- License Section --}}
@@ -75,9 +77,9 @@
             $(document).ready(function () {
                 $('#isLicenseCreate').val(0);
                 let licenseEnabled = false;
-                $('#customer_id').on('change', function () {
+                $('#customer_ref_id').on('change', function () {
                     const customerId = $(this).val();
-                    const productSelect = $('#product_id');
+                    const productSelect = $('#product_ref_id');
 
                     productSelect.empty().append('<option value="">Loading...</option>');
 
@@ -90,7 +92,7 @@
                                 if (products.length > 0) {
                                     productSelect.append('<option value="">-- Select Product --</option>');
                                     $.each(products, function (index, product) {
-                                        productSelect.append(`<option value="${product.product_id}">${product.name}</option>`);
+                                        productSelect.append(`<option value="${product.product_ref_id}">${product.name}</option>`);
                                     });
                                 } else {
                                     productSelect.append('<option value="">No unassigned products found.</option>');

@@ -24,6 +24,11 @@
                 </div>
 
                 <div class="form-group mb-3">
+                    <label for="product_ref_id"><strong>Product ID</strong></label>
+                    <input type="text" id="product_ref_id" class="form-control limited-width" value="{{ $product->product_ref_id }}" disabled>
+                </div>
+
+                <div class="form-group mb-3">
                     <label for="name"><strong>Version</strong></label>
                     <input type="text" id="version" class="form-control limited-width" value="{{ $product->version }}" disabled>
                 </div>

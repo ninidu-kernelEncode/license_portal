@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('licenses', function (Blueprint $table) {
             $table->id('license_id');
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('customer_id');
+            $table->string('product_ref_id');
+            $table->string('customer_ref_id');
             $table->string('license_key')->unique();
             $table->string('hash_algorithm');
             $table->date('start_date');
@@ -22,8 +22,8 @@ return new class extends Migration
             $table->enum('status', ['Active', 'Expired', 'Revoked']);
             $table->timestamps();
 
-            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
-            $table->foreign('customer_id')->references('customer_id')->on('customers')->onDelete('cascade');
+            $table->foreign('product_ref_id')->references('product_ref_id')->on('products')->onDelete('cascade');
+            $table->foreign('customer_ref_id')->references('customer_ref_id')->on('customers')->onDelete('cascade');
         });
     }
 

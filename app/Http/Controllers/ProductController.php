@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         if (\Auth::user()->can('product.manage')) {
-            $products = Product::latest()->paginate(10);
+            $products = Product::latest()->get();
             return view('products.index', compact('products'));
         }else{
             return redirect()->back()->with('error', 'User don\'t have permission to access this page');
@@ -26,7 +26,20 @@ class ProductController extends Controller
     public function create()
     {
         if (\Auth::user()->can('product.create')) {
-            return view('products.create');
+
+            $lastProduct = \App\Models\Product::select('product_ref_id', 'product_id')
+                ->orderBy('product_id', 'desc')
+                ->first();
+
+            if ($lastProduct) {
+                $lastNumber = (int)substr($lastProduct->product_ref_id, 3);
+                $nextNumber = $lastNumber + 1;
+            } else {
+                $nextNumber = 1;
+            }
+            $product_ref_id = 'PRD' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+
+            return view('products.create', compact('product_ref_id'));
         }else{
             return redirect()->back()->with('error', 'User don\'t have permission to access this page');
         }
@@ -42,6 +55,7 @@ class ProductController extends Controller
             $request->validate([
                 'name'     => 'required|string|max:255',
                 'version'     => 'required|string|max:255',
+                'product_ref_id'     => 'required|string|max:255',
             ]);
 
             try {
@@ -49,6 +63,7 @@ class ProductController extends Controller
                     'name'     => $request->name,
                     'version'    => $request->version,
                     'description'    => $request->description,
+                    'product_ref_id' => $request->product_ref_id,
                 ]);
                 $log_description = "Created Product ID - ". $Product->product_id;
                 create_log('Create Product', $log_description, $user);
@@ -95,10 +110,11 @@ class ProductController extends Controller
             $request->validate([
                 'name'     => 'required|string|max:255',
                 'version'     => 'required|string|max:255',
+                'product_ref_id'     => 'required|string|max:255',
             ]);
 
             try {
-                $data = $request->only(['name', 'version','description']);
+                $data = $request->only(['name', 'version','description','product_ref_id']);
 
                 $product->update($data);
 

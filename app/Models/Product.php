@@ -15,5 +15,6 @@ class Product extends Model
         'name',
         'version',
         'description',
+        'product_ref_id'
     ];
 }

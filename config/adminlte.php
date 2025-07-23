@@ -156,8 +156,9 @@ return [
     'layout_boxed' => null,
     'layout_fixed_sidebar' => null,
     'layout_fixed_navbar' => null,
-    'layout_fixed_footer' => null,
+    'layout_fixed_footer' => true,
     'layout_dark_mode' => null,
+    'breadcrumb' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -301,57 +302,52 @@ return [
     'menu' => [
         // Navbar items:
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
-        ],
-        [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-
-        // Sidebar items:
-        [
             'text' => 'Dashboard',
             'url'  => 'dashboard',
-            'icon' => 'fas fa-tachometer-alt',
+            'icon' => 'fas fa-chart-line',
         ],
         [
             'text' => 'User Management',
             'url'  => 'users',
-            'icon' => 'fas fa-users',
+            'icon' => 'fas fa-user-cog',
             'can'  => 'user.manage',
         ],
         [
             'text' => 'Customer Management',
             'url'  => 'customers',
-            'icon' => 'fas fa-users',
+            'icon' => 'fas fa-user-friends',
             'can'  => 'customer.manage',
         ],
         [
             'text' => 'Product Management',
             'url'  => 'products',
-            'icon' => 'fas fa-users',
+            'icon' => 'fas fa-box-open',
             'can'  => 'product.manage',
         ],
         [
             'text' => 'Product Assignment',
             'url'  => 'product_assignments',
-            'icon' => 'fas fa-users',
+            'icon' => 'fas fa-tasks',
             'can'  => 'product_assignment.manage',
+        ],
+        [
+            'text' => 'Licenses Management',
+            'url'  => 'licenses',
+            'icon' => 'fas fa-certificate',
+            'can'  => 'license.manage',
         ],
         [
             'text' => 'Roles & Permissions',
             'url'  => '/roles',
-            'icon' => 'fas fa-key',
+            'icon' => 'fas fa-user-shield',
             'can'  => 'role.manage',
         ],
         [
             'text' => 'Logs',
             'url'  => '/logs',
-            'icon' => 'fas fa-key',
+            'icon' => 'fas fa-clipboard-list',
             'can'  => 'logs.view',
-        ]
+        ],
     ],
 
     /*

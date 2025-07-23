@@ -50,13 +50,13 @@ class ProductAssignmentController extends Controller
 
             if( $request['isLicenseCreate'] == 0 ){
                 $request->validate([
-                    'customer_id' => 'required|exists:customers,customer_id',
-                    'product_id' => 'required|exists:products,product_id',
+                    'customer_ref_id' => 'required|exists:customers,customer_ref_id',
+                    'product_ref_id' => 'required|exists:products,product_ref_id',
                 ]);
             }else{
                 $request->validate([
-                    'customer_id' => 'required|exists:customers,customer_id',
-                    'product_id' => 'required|exists:products,product_id',
+                    'customer_ref_id' => 'required|exists:customers,customer_ref_id',
+                    'product_ref_id' => 'required|exists:products,product_ref_id',
                     'hash_algorithm' => 'required',
                     'start_date' => 'required',
                     'end_date' => 'required',
@@ -64,15 +64,15 @@ class ProductAssignmentController extends Controller
             }
             try {
                $product_assignment = ProductAssignment::create([
-                    'customer_id' => $request->customer_id,
-                    'product_id' => $request->product_id,
+                    'customer_ref_id' => $request->customer_ref_id,
+                    'product_ref_id' => $request->product_ref_id,
                     'assigned_at' => now(),
                     'status' => 1,
                 ]);
 
                if( $request['isLicenseCreate'] == 1 ){
-                   $data['customer_id'] =  $request->customer_id;
-                   $data['product_id'] =  $request->product_id;
+                   $data['customer_ref_id'] =  $request->customer_ref_id;
+                   $data['product_ref_id'] =  $request->product_ref_id;
                    $data['hash_algorithm'] =  $request->hash_algorithm;
                    $data['start_date'] =  $request->start_date;
                    $data['end_date'] =  $request->end_date;
@@ -95,10 +95,33 @@ class ProductAssignmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductAssignment $productAssignment)
+    public function show($id)
     {
-        //
+        if (\Auth::user()->can('product_assignment.view')) {
+            $customer = Customer::where('customer_ref_id', $id)->firstOrFail();
+
+            $assignments = ProductAssignment::where('customer_ref_id', $customer->customer_ref_id)->get();
+
+            $productLicenses = $assignments->map(function ($assignment) {
+                $product = Product::where('product_ref_id',$assignment->product_ref_id)->first();
+
+                $license = License::where('customer_ref_id', $assignment->customer_ref_id)
+                    ->where('product_ref_id', $assignment->product_ref_id)
+                    ->latest()
+                    ->first();
+
+                return [
+                    'product' => $product,
+                    'license' => $license,
+                ];
+            });
+
+            return view('product_assignments.show', compact('customer', 'productLicenses'));
+        } else {
+            return redirect()->back()->with('error', 'User doesn\'t have permission to access this page');
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -107,10 +130,10 @@ class ProductAssignmentController extends Controller
     {
         if (\Auth::user()->can('product_assignment.update')) {
             $assignment = ProductAssignment::with(['product', 'customer'])->findOrFail($id);
-            $customer = Customer::find($assignment->customer_id);
-            $product =  Product::find($assignment->product_id);
-            $license = License::where('customer_id', $assignment->customer_id)
-                ->where('product_id', $assignment->product_id)
+            $customer = Customer::where('customer_ref_id',$assignment->customer_ref_id)->first();
+            $product =  Product::where('product_ref_id',$assignment->product_ref_id)->first();
+            $license = License::where('customer_ref_id', $assignment->customer_ref_id)
+                ->where('product_ref_id', $assignment->product_ref_id)
                 ->latest()
                 ->first();
             return view('product_assignments.edit', compact('assignment','customer', 'license','product'));
@@ -128,8 +151,8 @@ class ProductAssignmentController extends Controller
             $user =  \Auth::user();
             if( $request['isLicenseCreate'] == 1 ){
                 $request->validate([
-                    'customer_id' => 'required|exists:customers,customer_id',
-                    'product_id' => 'required|exists:products,product_id',
+                    'customer_ref_id' => 'required|exists:customers,customer_ref_id',
+                    'product_ref_id' => 'required|exists:products,product_ref_id',
                     'hash_algorithm' => 'required',
                     'start_date' => 'required',
                     'end_date' => 'required',
@@ -137,8 +160,8 @@ class ProductAssignmentController extends Controller
             }
             try {
                 if( $request['isLicenseCreate'] == 1 ){
-                    $data['customer_id'] =  $request->customer_id;
-                    $data['product_id'] =  $request->product_id;
+                    $data['customer_ref_id'] =  $request->customer_ref_id;
+                    $data['product_ref_id'] =  $request->product_ref_id;
                     $data['hash_algorithm'] =  $request->hash_algorithm;
                     $data['start_date'] =  $request->start_date;
                     $data['end_date'] =  $request->end_date;
@@ -160,33 +183,16 @@ class ProductAssignmentController extends Controller
      */
     public function destroy($id)
     {
-        if (\Auth::user()->can('license.delete')) {
-            try {
-                $assignment = ProductAssignment::with(['product', 'customer'])->findOrFail($id);
-                $license = License::where('customer_id', $assignment->customer_id)
-                    ->where('product_id', $assignment->product_id)
-                    ->latest()
-                    ->first();
-                $license->status = 'Revoked';
-                $license->save();
-
-                return redirect()->route('product_assignments.index')->with('success', 'License revoked successfully.');
-            } catch (\Exception $e) {
-                return redirect()->route('product_assignments.index')->with('error', 'Failed to revoke License!');
-            }
-
-        }else{
-            return redirect()->back()->with('error', 'User don\'t have permission to access this page');
-        }
+        //
     }
 
     public function getUnassignedProducts($customer_id)
     {
-        $assignedProductIds = ProductAssignment::where('customer_id', $customer_id)
-            ->pluck('product_id')
+        $assignedProductIds = ProductAssignment::where('customer_ref_id', $customer_id)
+            ->pluck('product_ref_id')
             ->toArray();
 
-        $products = Product::whereNotIn('product_id', $assignedProductIds)->get();
+        $products = Product::whereNotIn('product_ref_id', $assignedProductIds)->get();
 
         return response()->json($products);
     }

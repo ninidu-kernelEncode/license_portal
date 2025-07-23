@@ -13,7 +13,7 @@ class CustomerController extends Controller
     public function index()
     {
         if (\Auth::user()->can('customer.manage')) {
-            $customers = Customer::latest()->paginate(10);
+            $customers = Customer::latest()->get();
             return view('customers.index', compact('customers'));
         }else{
             return redirect()->back()->with('error', 'User don\'t have permission to access this page');
@@ -26,7 +26,19 @@ class CustomerController extends Controller
     public function create()
     {
         if (\Auth::user()->can('customer.create')) {
-            return view('customers.create');
+            $lastCustomer = \App\Models\Customer::select('customer_ref_id', 'customer_id')
+                ->orderBy('customer_id', 'desc')
+                ->first();
+
+            if ($lastCustomer) {
+                $lastNumber = (int)substr($lastCustomer->customer_ref_id, 3);
+                $nextNumber = $lastNumber + 1;
+            } else {
+                $nextNumber = 1;
+            }
+            $customer_ref_id = 'CUS' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+
+            return view('customers.create', compact('customer_ref_id'));
         }else{
             return redirect()->back()->with('error', 'User don\'t have permission to access this page');
         }
@@ -42,6 +54,7 @@ class CustomerController extends Controller
             $request->validate([
                 'customer_name'     => 'required|string|max:255',
                 'email'    => 'required|string|email|max:255|unique:customers',
+                'customer_ref_id'     => 'required|string|max:255',
             ]);
 
             try {
@@ -50,6 +63,7 @@ class CustomerController extends Controller
                     'email'    => $request->email,
                     'company'    => $request->company,
                     'contact_number'    => $request->contact_number,
+                    'customer_ref_id'    => $request->customer_ref_id,
                 ]);
                 $log_description = "Created customer ID - ". $customer->customer_id;
                 create_log('Create customer', $log_description, $user);
@@ -96,10 +110,11 @@ class CustomerController extends Controller
             $request->validate([
                 'customer_name'  => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:customers,email,' . $customer->customer_id . ',customer_id',
-            ]);
+                'customer_ref_id'     => 'required|string|max:255',
+                ]);
 
             try {
-                $data = $request->only(['customer_name', 'email','company','contact_number']);
+                $data = $request->only(['customer_name', 'email','company','contact_number','customer_ref_id']);
 
                 $customer->update($data);
 

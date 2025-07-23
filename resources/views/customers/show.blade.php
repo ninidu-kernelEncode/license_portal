@@ -24,6 +24,11 @@
                 </div>
 
                 <div class="form-group mb-3">
+                    <label for="customer_ref_id"><strong>Customer ID</strong></label>
+                    <input type="text" id="customer_ref_id" class="form-control limited-width" value="{{ $customer->customer_ref_id }}" disabled>
+                </div>
+
+                <div class="form-group mb-3">
                     <label for="email"><strong>Email</strong></label>
                     <input type="email" id="email" class="form-control limited-width" value="{{ $customer->email }}" disabled>
                 </div>

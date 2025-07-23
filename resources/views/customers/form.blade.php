@@ -7,15 +7,23 @@
 
             {{-- Name --}}
             <div class="form-group col-8">
-                <label for="customer_name"><i class="fas fa-user me-1 text-primary"></i> Customer name</label>
+                <label for="customer_name">Customer name</label>
                 <input id="customer_name" name="customer_name" type="text" class="form-control @error('customer_name') is-invalid @enderror"
                        value="{{ old('customer_name', $customer->customer_name ?? '') }}" required>
                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
 
+            {{-- Customer REF ID --}}
+            <div class="form-group col-8">
+                <label for="customer_ref_id">Customer ID</label>
+                <input id="customer_ref_id" name="customer_ref_id" type="text" class="form-control @error('customer_ref_id') is-invalid @enderror"
+                       value="{{ isset($customer_ref_id) ? $customer_ref_id : $customer->customer_ref_id }}" required readonly>
+                @error('customer_ref_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
+
             {{-- Email --}}
             <div class="form-group mt-3 col-8">
-                <label for="email"><i class="fas fa-envelope me-1 text-primary"></i> Email</label>
+                <label for="email">Email</label>
                 <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror"
                        value="{{ old('email', $customer->email ?? '') }}" required>
                 @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -23,7 +31,7 @@
 
             {{-- company --}}
             <div class="form-group col-8">
-                <label for="name"><i class="fas fa-user me-1 text-primary"></i> Company</label>
+                <label for="name">Company</label>
                 <input id="company" name="company" type="text" class="form-control @error('company') is-invalid @enderror"
                        value="{{ old('company', $customer->company ?? '') }}">
                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -31,7 +39,7 @@
 
             {{--  Contact No --}}
             <div class="form-group col-8">
-                <label for="name"><i class="fas fa-user me-1 text-primary"></i> Contact No</label>
+                <label for="name">Contact No</label>
                 <input id="contact_number" name="contact_number" type="text" class="form-control @error('contact_number') is-invalid @enderror"
                        value="{{ old('contact_number', $customer->contact_number ?? '') }}">
                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror

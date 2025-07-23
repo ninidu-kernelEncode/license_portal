@@ -21,11 +21,13 @@
         </div>
     @endif
 
+    <div class="create-assignment d-flex">
     <a href="{{ route('product_assignments.create') }}" class="btn btn-primary mb-3">
         <i class="fas fa-plus"></i> Assign Product
     </a>
+    </div>
 
-    <div class="card">
+    <div class="card create-assignment-card">
         <div class="card-body table-responsive">
 
             <table class="table table-hover mb-0 product-assign">
@@ -48,22 +50,12 @@
                             @endforeach
                         </td>
                         <td>
-                            <a href="{{ route('product_assignments.show', $customer->customer_id) }}" class="btn btn-sm btn-primary">
+                            <a href="{{ route('product_assignments.show', $customer->customer_ref_id) }}" class="btn btn-sm btn-primary">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('product_assignments.edit', $customer->assignments->first()->assignment_id ?? 0) }}" class="btn btn-sm btn-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form action="{{ route('product_assignments.destroy', $customer->assignments->first()->assignment_id ?? 0) }}" method="POST" style="display:inline-block">
-                                @csrf @method('DELETE')
-                                <button onclick="return confirm('Delete this assignment?')" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="3" class="text-center text-muted">No product assignments found.</td></tr>
                 @endforelse
                 </tbody>
             </table>
@@ -71,13 +63,13 @@
     </div>
 @stop
 
-@push('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-@endpush
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap5.min.css') }}">
+@endsection
 
 @push('js')
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dataTables.bootstrap5.min.js') }}"></script>
     <script>
         $(document).ready(function () {
             const table = $('.product-assign').DataTable();

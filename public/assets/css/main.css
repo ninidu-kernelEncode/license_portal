@@ -43,6 +43,9 @@
 
 
 /*product assign module*/
+.create-assignment.d-flex {
+    justify-content: end;
+}
 .product-assign.table-hover tbody tr:hover {
     background-color: #e6f2ff !important;
 }
@@ -58,4 +61,20 @@
 .license-section.border.rounded.p-3.mt-4 {
     margin-left: 8px;
     margin-bottom: 15px;
+}
+.create-assignment-card a.badge.bg-info.text-white {
+    text-decoration: none;
+}
+.customer-name {
+    padding: 5px;
+}
+
+
+/*general*/
+
+label {
+    font-weight: 400!important;
+}
+.content-header h1 {
+    font-weight: 400 !important;
 }
