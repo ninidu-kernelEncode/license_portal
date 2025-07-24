@@ -14,6 +14,7 @@ class ProductAssignment extends Model
     protected $fillable = [
         'product_ref_id',
         'customer_ref_id',
+        'assigned_at',
         'status',
     ];
 
