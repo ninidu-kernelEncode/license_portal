@@ -83,7 +83,7 @@ class ProductAssignmentController extends Controller
                 create_log('Product Assign', $log_description, $user);
                 return redirect()->route('product_assignments.index')->with('success', 'Product Assign Successfully.');
             } catch (\Exception $e) {
-                return redirect()->route('product_assignments.index')->with('error', 'Failed to Assign Product!');
+                return redirect()->route('product_assignments.index')->with('error',$e);
             }
         }else{
             return redirect()->back()->with('error', 'User don\'t have permission to access this page');
