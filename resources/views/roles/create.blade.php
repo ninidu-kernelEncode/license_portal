@@ -12,7 +12,7 @@
         @csrf
 
         <div class="mb-3">
-            <label for="name" class="form-label">Role Name</label>
+            <label for="name" class="form-label">Role Name</label> <span class="text-danger">*</span>
             <input type="text" name="name" id="name" class="form-control" required>
             @error('name')
             <div class="text-danger mt-1">{{ $message }}</div>

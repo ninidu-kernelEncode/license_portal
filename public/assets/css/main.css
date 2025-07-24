@@ -81,6 +81,10 @@ label {
 .brand-link .brand-image {
     box-shadow:none!important;
 }
-.brand-text {
-    text-decoration: unset!important;
+a.brand-link {
+    text-decoration: none;
+}
+.brand-link .brand-image {
+    margin-right: 0rem;
+    margin-top: -2px;
 }

@@ -20,7 +20,7 @@
         @method('PUT')
 
         <div class="mb-3">
-            <label for="roleName" class="form-label">Role Name</label>
+            <label for="roleName" class="form-label">Role Name</label> <span class="text-danger">*</span>
             <input type="text" id="roleName" name="name" class="form-control" value="{{ old('name', $role->name) }}" required>
             @error('name')
             <div class="text-danger small mt-1">{{ $message }}</div>

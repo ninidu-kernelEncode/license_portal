@@ -7,7 +7,7 @@
 
             {{-- Name --}}
             <div class="form-group col-8">
-                <label for="customer_name">Customer name</label>
+                <label for="customer_name">Customer name</label> <span class="text-danger">*</span>
                 <input id="customer_name" name="customer_name" type="text" class="form-control @error('customer_name') is-invalid @enderror"
                        value="{{ old('customer_name', $customer->customer_name ?? '') }}" required>
                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -15,7 +15,7 @@
 
             {{-- Customer REF ID --}}
             <div class="form-group col-8">
-                <label for="customer_ref_id">Customer ID</label>
+                <label for="customer_ref_id">Customer ID</label> <span class="text-danger">*</span>
                 <input id="customer_ref_id" name="customer_ref_id" type="text" class="form-control @error('customer_ref_id') is-invalid @enderror"
                        value="{{ isset($customer_ref_id) ? $customer_ref_id : $customer->customer_ref_id }}" required readonly>
                 @error('customer_ref_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -23,7 +23,7 @@
 
             {{-- Email --}}
             <div class="form-group mt-3 col-8">
-                <label for="email">Email</label>
+                <label for="email">Email</label> <span class="text-danger">*</span>
                 <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror"
                        value="{{ old('email', $customer->email ?? '') }}" required>
                 @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -47,7 +47,7 @@
             {{-- Submit --}}
             <div class="form-group d-flex user-create-submit">
                 <button type="submit" class="btn btn-success submit-button">
-                    {{ isset($user) ? 'Update' : 'Save' }}
+                    {{ isset($customer) ? 'Update' : 'Save' }}
                 </button>
             </div>
 

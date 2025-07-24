@@ -7,7 +7,7 @@
 
             {{-- Name --}}
             <div class="form-group col-8">
-                <label for="name">Product name</label>
+                <label for="name">Product name</label> <span class="text-danger">*</span>
                 <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror"
                        value="{{ old('name', $product->name ?? '') }}" required>
                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -15,7 +15,7 @@
 
             {{-- Customer REF ID --}}
             <div class="form-group col-8">
-                <label for="product_ref_id">Product ID</label>
+                <label for="product_ref_id">Product ID</label> <span class="text-danger">*</span>
                 <input id="product_ref_id" name="product_ref_id" type="text" class="form-control @error('product_ref_id') is-invalid @enderror"
                        value="{{ isset($product_ref_id) ? $product_ref_id : $product->product_ref_id }}" required readonly>
                 @error('product_ref_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -23,7 +23,7 @@
 
             {{-- Version --}}
             <div class="form-group col-8">
-                <label for="version">version</label>
+                <label for="version">version</label> <span class="text-danger">*</span>
                 <input id="version" name="version" type="text" class="form-control @error('version') is-invalid @enderror"
                        value="{{ old('version', $product->version ?? '') }}" required>
                 @error('version') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -42,7 +42,7 @@
             {{-- Submit --}}
             <div class="form-group d-flex user-create-submit">
                 <button type="submit" class="btn btn-success submit-button">
-                    {{ isset($user) ? 'Update' : 'Save' }}
+                    {{ isset($product) ? 'Update' : 'Save' }}
                 </button>
             </div>
 

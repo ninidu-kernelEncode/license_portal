@@ -10,7 +10,7 @@
             <div class="card-body">
 
                 <div class="form-group col-6">
-                    <label for="customer_ref_id">Customer</label>
+                    <label for="customer_ref_id">Customer</label> <span class="text-danger">*</span>
                     <select name="customer_ref_id" id="customer_ref_id" class="form-control @error('customer_ref_id') is-invalid @enderror"  required>
                         <option value="">-- Select Customer --</option>
                         @foreach ($customers as $customer)
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="form-group mt-3 col-6">
-                    <label for="product_ref_id">Product</label>
+                    <label for="product_ref_id">Product</label> <span class="text-danger">*</span>
                     <select name="product_ref_id" id="product_ref_id" class="form-control @error('product_ref_id') is-invalid @enderror" required>
                         <option value="">-- Select a product first --</option>
                     </select>

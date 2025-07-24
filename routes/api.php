@@ -1,7 +1,10 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LicenseController;
+use App\Http\Controllers\Api\LicenseController;
+use App\Http\Controllers\Api\AuthController;
 
-//Route::get('/licenses/{id}/{id2}/{id3}/check-license-validity', [LicenseController::class, 'checkLicenseValidity'])->name('api.licenses.checkLicenseValidity');
-Route::middleware('auth.basic')->get('/licenses/{key}/{customer_id}/{product_id}/checkLicenseValidity', [LicenseController::class, 'checkLicenseValidity']);
+Route::post('/auth', [AuthController::class, 'auth']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/licenses/check', [LicenseController::class, 'checkLicenseValidity']);
+});
