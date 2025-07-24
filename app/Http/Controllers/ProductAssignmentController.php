@@ -66,7 +66,6 @@ class ProductAssignmentController extends Controller
                $product_assignment = ProductAssignment::create([
                     'customer_ref_id' => $request->customer_ref_id,
                     'product_ref_id' => $request->product_ref_id,
-                    'status' => 1,
                 ]);
 
                if( $request['isLicenseCreate'] == 1 ){
