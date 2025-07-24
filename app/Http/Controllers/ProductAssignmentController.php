@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\License;
-
+use Carbon\Carbon;
 class ProductAssignmentController extends Controller
 {
     /**
@@ -66,6 +66,7 @@ class ProductAssignmentController extends Controller
                $product_assignment = ProductAssignment::create([
                     'customer_ref_id' => $request->customer_ref_id,
                     'product_ref_id' => $request->product_ref_id,
+                    'assigned_at' => Carbon::now(),
                 ]);
 
                if( $request['isLicenseCreate'] == 1 ){
@@ -83,7 +84,7 @@ class ProductAssignmentController extends Controller
                 create_log('Product Assign', $log_description, $user);
                 return redirect()->route('product_assignments.index')->with('success', 'Product Assign Successfully.');
             } catch (\Exception $e) {
-                return redirect()->route('product_assignments.index')->with('error',$e);
+                return redirect()->route('product_assignments.index')->with('error','Failed to Assign Product!');
             }
         }else{
             return redirect()->back()->with('error', 'User don\'t have permission to access this page');
