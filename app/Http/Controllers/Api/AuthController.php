@@ -21,11 +21,15 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        $token = $user->createToken('api_token')->plainTextToken;
+        $tokenResult = $user->createToken('api_token');
+
+        $tokenResult->accessToken->expires_at = now()->addHours(24);
+        $tokenResult->accessToken->save();
 
         return response()->json([
-            'access_token' => $token,
+            'access_token' => $tokenResult->plainTextToken,
             'token_type'   => 'Bearer',
+            'expires_at'   => $tokenResult->accessToken->expires_at->toDateTimeString(),
         ]);
     }
 

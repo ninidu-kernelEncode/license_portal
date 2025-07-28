@@ -5,6 +5,6 @@ use App\Http\Controllers\Api\AuthController;
 
 Route::post('/auth', [AuthController::class, 'auth']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'check.token.expiry'])->group(function () {
     Route::post('/licenses/check', [LicenseController::class, 'checkLicenseValidity']);
 });
