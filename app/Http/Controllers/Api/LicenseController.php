@@ -32,10 +32,6 @@ class LicenseController extends Controller
                 return response()->json($response);
             }
 
-            if ($license->status == 'Revoked') {
-                return response()->json($response);
-            }
-
             $rawLicense = "{$request['customer_id']}|{$request['product_id']}|{$license->start_date}|{$license->end_date}";
 
             switch ($license->hash_algorithm) {
@@ -78,6 +74,10 @@ class LicenseController extends Controller
                     ];
                 }
 
+                return response()->json($response);
+            }
+
+            if ($license->status == 'Revoked') {
                 return response()->json($response);
             }
 
