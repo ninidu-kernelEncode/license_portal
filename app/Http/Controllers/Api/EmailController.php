@@ -48,7 +48,7 @@ class EmailController extends Controller
 
         Mail::html($htmlContent, function ($message) use ($email) {
             $message->to($email)
-                ->subject('Password Reset Code');
+                ->subject('Password Reset - Tara');
         });
     }
 
